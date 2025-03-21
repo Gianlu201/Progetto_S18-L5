@@ -82,5 +82,37 @@
 
             }
         }
+
+        async function showDeleteClientModal(id){
+            const response = await fetch(`Account/DeleteClient/${id}`, {
+                method: 'GET'
+            });
+            if (response.ok) {
+                const data = await response.text();
+                console.log(data);
+                document.getElementById('modalContainer').innerHTML = data;
+                var myModal = new bootstrap.Modal(document.getElementById('userDeleteModal'));
+                myModal.show();
+            }
+        }
+
+        async function confirmDelete(id) {
+            const response = await fetch(`Account/ConfirmDeleteClient/${id}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    const deleteModal = document.getElementById('userDeleteModal');
+                    if (deleteModal) {
+                        const deleteModalInstance = bootstrap.Modal.getInstance(deleteModal);
+                        deleteModalInstance.hide();
+                        loadList();
+                    }
+                }
+            }
+        }
+
     </script>
 }

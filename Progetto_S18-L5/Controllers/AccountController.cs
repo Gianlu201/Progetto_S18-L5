@@ -292,7 +292,7 @@ namespace Progetto_S18_L5.Controllers
                 Email = user.Email,
             };
 
-            return PartialView("_ClientEdit", editClientViewModel);
+            return PartialView("_ClientEditModal", editClientViewModel);
         }
 
         [HttpPost]
@@ -308,6 +308,49 @@ namespace Progetto_S18_L5.Controllers
 
             if (!result)
             {
+                return Json(new { success = false });
+            }
+
+            return Json(new { success = true });
+        }
+
+        [HttpGet("Account/DeleteClient/{id:guid}")]
+        public async Task<IActionResult> DeleteClient(Guid id)
+        {
+            var client = await _userManager.FindByIdAsync(id.ToString());
+
+            if (client == null)
+            {
+                TempData["Error"] = "User not found";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var resultUser = new UserDeleteViewModel()
+            {
+                Id = client.Id,
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+            };
+
+            return PartialView("_UserDeleteModal", resultUser);
+        }
+
+        [HttpPost("Account/ConfirmDeleteClient/{id:guid}")]
+        public async Task<IActionResult> ConfirmDeleteClient(Guid id)
+        {
+            var client = await _userManager.FindByIdAsync(id.ToString());
+
+            if (client == null)
+            {
+                TempData["Error"] = "User not found";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var result = await _userManager.DeleteAsync(client);
+
+            if (!result.Succeeded)
+            {
+                TempData["Error"] = "Error while deleting client!";
                 return Json(new { success = false });
             }
 
