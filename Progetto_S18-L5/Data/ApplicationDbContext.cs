@@ -71,6 +71,20 @@ namespace Progetto_S18_L5.Data
                 .WithMany(u => u.Reservations)
                 .HasForeignKey(r => r.ClientId);
 
+            // Configura la relazione tra Reservation e ApplicationUser per la proprietà EmployeeId
+            modelBuilder
+                .Entity<Reservation>()
+                .HasOne(r => r.Employee)
+                .WithMany(u => u.OperatorReservations)
+                .HasForeignKey(r => r.EmployeeId);
+
+            modelBuilder
+                .Entity<Reservation>()
+                .HasOne(r => r.Employee)
+                .WithMany(u => u.OperatorReservations)
+                .HasForeignKey(r => r.EmployeeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             // Configura valore di default al campo CheckIn di Reservation
             modelBuilder
                 .Entity<Reservation>()

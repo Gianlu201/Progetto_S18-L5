@@ -12,7 +12,7 @@ using Progetto_S18_L5.Data;
 namespace Progetto_S18_L5.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250321112036_Initial")]
+    [Migration("20250321114128_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -240,7 +240,7 @@ namespace Progetto_S18_L5.Migrations
                         {
                             Id = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "51c6680e-5cfa-40a8-b200-47d2d8481f65",
+                            ConcurrencyStamp = "deab0e89-dc2b-4863-837e-06db55d93754",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -251,7 +251,7 @@ namespace Progetto_S18_L5.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==",
                             PhoneNumber = "0000000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8a004169-727e-4e5e-8c1e-7ddf3d62c43b",
+                            SecurityStamp = "a0cb5a26-13ba-4047-b3c7-cd4a4862357d",
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com"
                         },
@@ -259,7 +259,7 @@ namespace Progetto_S18_L5.Migrations
                         {
                             Id = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a2974c78-f27e-4392-94a7-0db07661c441",
+                            ConcurrencyStamp = "8a7e59fc-e210-4eab-9d62-0219218b0bff",
                             Email = "mario.mario@examople.com",
                             EmailConfirmed = false,
                             FirstName = "Mario",
@@ -270,7 +270,7 @@ namespace Progetto_S18_L5.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==",
                             PhoneNumber = "1111111111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "46efe68e-4ec9-4d25-bbb1-14e99f07c8e0",
+                            SecurityStamp = "3e48fca0-5e10-4b37-9de7-8fb866d09070",
                             TwoFactorEnabled = false,
                             UserName = "mario.mario@example.com"
                         },
@@ -278,7 +278,7 @@ namespace Progetto_S18_L5.Migrations
                         {
                             Id = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a5904b41-0e50-41d4-999e-46b189cd40b4",
+                            ConcurrencyStamp = "347d69e0-a40f-4cfe-a07b-4efb2ea3e70f",
                             Email = "luigi.mario@example.com",
                             EmailConfirmed = false,
                             FirstName = "Luigi",
@@ -289,7 +289,7 @@ namespace Progetto_S18_L5.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==",
                             PhoneNumber = "2222222222",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3c79a20a-ad34-405e-9668-298240ce7c49",
+                            SecurityStamp = "811e94eb-e873-4557-906d-9cac64e6bdac",
                             TwoFactorEnabled = false,
                             UserName = "luigi.mario@example.com"
                         });
@@ -345,6 +345,10 @@ namespace Progetto_S18_L5.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
 
@@ -354,6 +358,8 @@ namespace Progetto_S18_L5.Migrations
                     b.HasKey("ReservationId");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("RoomId");
 
@@ -529,6 +535,12 @@ namespace Progetto_S18_L5.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Progetto_S18_L5.Models.ApplicationUser", "Employee")
+                        .WithMany("OperatorReservations")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Progetto_S18_L5.Models.Room", "Room")
                         .WithMany("Reservations")
                         .HasForeignKey("RoomId")
@@ -536,6 +548,8 @@ namespace Progetto_S18_L5.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("Employee");
 
                     b.Navigation("Room");
                 });
@@ -559,6 +573,8 @@ namespace Progetto_S18_L5.Migrations
             modelBuilder.Entity("Progetto_S18_L5.Models.ApplicationUser", b =>
                 {
                     b.Navigation("ApplicationUserRole");
+
+                    b.Navigation("OperatorReservations");
 
                     b.Navigation("Reservations");
                 });

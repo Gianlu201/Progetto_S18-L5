@@ -23,11 +23,17 @@ namespace Progetto_S18_L5.Models
         [Required]
         public required bool State { get; set; }
 
+        [Required]
+        public required string EmployeeId { get; set; }
+
         // navigazione
         [ForeignKey("ClientId")]
         public ApplicationUser Client { get; set; }
 
         [ForeignKey("RoomId")]
         public Room Room { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public ApplicationUser Employee { get; set; }
     }
 }

@@ -203,7 +203,8 @@ namespace Progetto_S18_L5.Migrations
                     RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    State = table.Column<bool>(type: "bit", nullable: false)
+                    State = table.Column<bool>(type: "bit", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,6 +215,11 @@ namespace Progetto_S18_L5.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservations_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reservations_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -237,9 +243,9 @@ namespace Progetto_S18_L5.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "55e83e62-2057-45b0-82fe-33a4cba69a2e", 0, "51c6680e-5cfa-40a8-b200-47d2d8481f65", "admin@example.com", false, "Admin", "Admin", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==", "0000000000", false, "8a004169-727e-4e5e-8c1e-7ddf3d62c43b", false, "admin@example.com" },
-                    { "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2", 0, "a5904b41-0e50-41d4-999e-46b189cd40b4", "luigi.mario@example.com", false, "Luigi", "Mario", false, null, "LUIGI.MARIO@EXAMPLE.COM", "LUIGI.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==", "2222222222", false, "3c79a20a-ad34-405e-9668-298240ce7c49", false, "luigi.mario@example.com" },
-                    { "7f11db70-49f5-4c66-bad3-51085c2bd27a", 0, "a2974c78-f27e-4392-94a7-0db07661c441", "mario.mario@examople.com", false, "Mario", "Mario", false, null, "MARIO.MARIO@EXAMPLE.COM", "MARIO.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==", "1111111111", false, "46efe68e-4ec9-4d25-bbb1-14e99f07c8e0", false, "mario.mario@example.com" }
+                    { "55e83e62-2057-45b0-82fe-33a4cba69a2e", 0, "deab0e89-dc2b-4863-837e-06db55d93754", "admin@example.com", false, "Admin", "Admin", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==", "0000000000", false, "a0cb5a26-13ba-4047-b3c7-cd4a4862357d", false, "admin@example.com" },
+                    { "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2", 0, "347d69e0-a40f-4cfe-a07b-4efb2ea3e70f", "luigi.mario@example.com", false, "Luigi", "Mario", false, null, "LUIGI.MARIO@EXAMPLE.COM", "LUIGI.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==", "2222222222", false, "811e94eb-e873-4557-906d-9cac64e6bdac", false, "luigi.mario@example.com" },
+                    { "7f11db70-49f5-4c66-bad3-51085c2bd27a", 0, "8a7e59fc-e210-4eab-9d62-0219218b0bff", "mario.mario@examople.com", false, "Mario", "Mario", false, null, "MARIO.MARIO@EXAMPLE.COM", "MARIO.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==", "1111111111", false, "3e48fca0-5e10-4b37-9de7-8fb866d09070", false, "mario.mario@example.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -317,6 +323,11 @@ namespace Progetto_S18_L5.Migrations
                 name: "IX_Reservations_ClientId",
                 table: "Reservations",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_EmployeeId",
+                table: "Reservations",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_RoomId",

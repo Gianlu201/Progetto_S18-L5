@@ -16,5 +16,7 @@ namespace Progetto_S18_L5.Models
         public ICollection<ApplicationUserRole>? ApplicationUserRole { get; set; }
 
         public ICollection<Reservation>? Reservations { get; set; }
+
+        public ICollection<Reservation>? OperatorReservations { get; set; }
     }
 }
