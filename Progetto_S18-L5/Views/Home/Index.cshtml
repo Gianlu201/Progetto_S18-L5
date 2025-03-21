@@ -3,7 +3,14 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome, @User.Identity.Name</h1>
+    @if(User.Identity.IsAuthenticated)
+    {
+        <h1 class="display-4">Welcome, @User.Identity.Name</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Welcome, please login!</h1>
+    }
 
     <div class="text-start mt-5">
         <h5>Per l'accesso sono stati configurati degli account default:</h5>

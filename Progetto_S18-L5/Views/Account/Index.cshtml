@@ -11,16 +11,26 @@
         <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Add client</a>
     </div>
 
-    <div id="clientsBox"></div>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> @TempData["Error"].
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
+    <div id="clientsBox"></div>
 </div>
+
+<div id="modalContainer"></div>
 
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            load();
+            loadList();
         })
-        async function load() {
+
+        async function loadList() {
             let clientsBox = document.getElementById('clientsBox');
             const response = await fetch('Account/GetAllClients', {
                 method: 'GET'
@@ -29,6 +39,46 @@
                 const data = await response.text();
                 console.log(data);
                 clientsBox.innerHTML = data;
+
+            }
+        }
+
+        async function editClient(id) {
+            const response = await fetch(`Account/EditClient/${id}`, {
+                method: 'GET'
+            });
+            if (response.ok) {
+                const data = await response.text();
+                console.log(data);
+                document.getElementById('modalContainer').innerHTML = data;
+                var myModal = new bootstrap.Modal(document.getElementById('editClientModal'));
+                myModal.show();
+            }
+        }
+
+        async function sendEditForm(){
+            const form = document.getElementById('cliendEditForm');
+            console.log("step1");
+            if(form != null){
+            console.log("step2");
+                const formData = new FormData(form);
+
+                const result = await fetch('Account/EditClient', {
+                    method: "POST",
+                    body: formData
+                })
+
+                const response = await result.json();
+
+                if(response.success){
+                    const editModal = document.getElementById('editClientModal');
+
+                    if(editModal){
+                        const editModalInstance = bootstrap.Modal.getInstance(editModal);
+                        editModalInstance.hide();
+                        loadList();
+                    }
+                }
 
             }
         }

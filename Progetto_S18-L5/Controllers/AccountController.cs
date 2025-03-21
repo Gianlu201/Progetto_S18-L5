@@ -271,5 +271,47 @@ namespace Progetto_S18_L5.Controllers
 
             return PartialView("_EmployeesList", usersList);
         }
+
+        [HttpGet("Account/EditClient/{id:guid}")]
+        public async Task<IActionResult> EditClient(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                TempData["Error"] = "User not found";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var editClientViewModel = new EditClientViewModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+            };
+
+            return PartialView("_ClientEdit", editClientViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditClient(EditClientViewModel editClient)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Error while updating client!";
+                return Json(new { success = false });
+            }
+
+            var result = await _accountService.EditClientAsync(editClient);
+
+            if (!result)
+            {
+                return Json(new { success = false });
+            }
+
+            return Json(new { success = true });
+        }
     }
 }

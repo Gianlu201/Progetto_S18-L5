@@ -9,66 +9,64 @@
 }
 
 <div class="container">
-    @* @if(clients?.Count <= 0)
-    {
-        <p class="lead text-secondary text-center">No clients found! You need to register a client first!</p>
-    } else if(roomsList?.Rooms.Count <= 0)
-    {
-        <p class="lead text-secondary text-center">No room is available now!</p>
-    }
-    else
-    { *@
-        <form class="w-50 mx-auto" method="post" asp-controller="Reservation" asp-action="Add">
-            <div class="my-2">
-                <label class="form-label" for="clientId" asp-for="ClientId"></label>
-                <select class="form-select" id="clientId" asp-for="ClientId">
-                    <option value="">-- select a client --</option>
-                    @foreach (var client in clients)
+    <form class="w-50 mx-auto" method="post" asp-controller="Reservation" asp-action="Add">
+        <div class="my-2">
+            <label class="form-label" for="clientId" asp-for="ClientId"></label>
+            <select class="form-select" id="clientId" asp-for="ClientId">
+                <option value="">-- select a client --</option>
+                @foreach (var client in clients)
+                {
+                    <option value="@client.Id">@client.FirstName @client.LastName</option>
+                }
+            </select>
+        </div>
+
+        <div class="my-2">
+            <label class="form-label" for="roomId" asp-for="RoomId"></label>
+            <select class="form-select" id="roomId" asp-for="RoomId">
+                <option value="">-- select a room --</option>
+                @if (roomsList != null && roomsList.Rooms != null && roomsList.Rooms.Count > 0)
+                {
+                    @foreach (var room in roomsList.Rooms)
                     {
-                        <option value="@client.Id">@client.FirstName @client.LastName</option>
+                        <option value="@room.RoomId">Room @room.RoomNumber <span class="small">(for @room.RoomType.MaxOccupancy people)</span></option>
                     }
-                </select>
+                }
+
+            </select>
+        </div>
+
+        <div class="my-2">
+            <label class="form-label mb-1" for="checkIn" asp-for="CheckIn"></label>
+            <input type="date" class="form-control" id="checkIn" asp-for="CheckIn" />
+            <span class="text-danger" asp-validation-for="CheckIn"></span>
+        </div>
+
+        <div class="my-2">
+            <label class="form-label mb-1" for="checkOut" asp-for="CheckOut"></label>
+            <input type="date" class="form-control" id="checkOut" asp-for="CheckOut" />
+            <span class="text-danger" asp-validation-for="CheckOut"></span>
+        </div>
+
+        <div class="my-2">
+            <input type="checkbox" asp-for="State" id="state" class="form-check-input" />
+            <label class="form-check-label" for="state" asp-for="State"></label>
+        </div>
+
+        <input hidden asp-for="EmployeeId" value="@id" />
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> @TempData["Error"].
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        }
 
-            <div class="my-2">
-                <label class="form-label" for="roomId" asp-for="RoomId"></label>
-                <select class="form-select" id="roomId" asp-for="RoomId">
-                    <option value="">-- select a room --</option>
-                    @if (roomsList != null && roomsList.Rooms != null && roomsList.Rooms.Count > 0)
-                    {
-                        @foreach (var room in roomsList.Rooms)
-                        {
-                            <option value="@room.RoomId">Room @room.RoomNumber <span class="small">(for @room.RoomType.MaxOccupancy people)</span></option>
-                        }
-                    }
-
-                </select>
-            </div>
-
-            <div class="my-2">
-                <label class="form-label mb-1" for="checkIn" asp-for="CheckIn"></label>
-                <input type="date" class="form-control" id="checkIn" asp-for="CheckIn" />
-                <span class="text-danger" asp-validation-for="CheckIn"></span>
-            </div>
-
-            <div class="my-2">
-                <label class="form-label mb-1" for="checkOut" asp-for="CheckOut"></label>
-                <input type="date" class="form-control" id="checkOut" asp-for="CheckOut" />
-                <span class="text-danger" asp-validation-for="CheckOut"></span>
-            </div>
-
-            <div class="my-2">
-                <input type="checkbox" asp-for="State" id="state" class="form-check-input" />
-                <label class="form-check-label" for="state" asp-for="State"></label>
-            </div>
-
-            <input hidden asp-for="EmployeeId" value="@id" />
-
-            <div class="d-flex justify-content-end my-2">
-                <button type="submit" class="btn btn-success">Register</button>
-            </div>
-        </form>
-    @* } *@
+        <div class="d-flex justify-content-end my-2">
+            <button type="submit" class="btn btn-success">Register</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {

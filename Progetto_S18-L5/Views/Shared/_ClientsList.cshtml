@@ -26,8 +26,8 @@
                     @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                     {
                         <td>
-                            <a class="btn btn-sm btn-warning">Edit</a>
-                            <a class="btn btn-sm btn-danger">Delete</a>
+                            <button class="btn btn-sm btn-warning" onclick="editClient('@user.Id')">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
                         </td>
                     }
                 </tr>
