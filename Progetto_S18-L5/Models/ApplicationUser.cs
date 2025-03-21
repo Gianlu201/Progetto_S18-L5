@@ -14,5 +14,7 @@ namespace Progetto_S18_L5.Models
 
         // navigazione
         public ICollection<ApplicationUserRole>? ApplicationUserRole { get; set; }
+
+        public ICollection<Reservation>? Reservations { get; set; }
     }
 }
