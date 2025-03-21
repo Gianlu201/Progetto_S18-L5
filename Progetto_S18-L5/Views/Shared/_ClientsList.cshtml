@@ -1,6 +1,6 @@
-﻿@model ReservationsListViewModel
+﻿@model UsersListViewModel
 
-@if (Model.Reservations.Count > 0)
+@if (Model.Users.Count > 0)
 {
     <table class="table table-striped table-hover">
         <thead>
@@ -8,7 +8,7 @@
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Email</th>
-                <th>Room number</th>
+                <th>Phone number</th>
                 @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                 {
                     <th>Actions</th>
@@ -16,13 +16,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var reservation in Model.Reservations)
+            @foreach (var user in Model.Users)
             {
                 <tr>
-                    <td>@reservation.Client.FirstName</td>
-                    <td>@reservation.Client.LastName</td>
-                    <td>@reservation.Client.Email</td>
-                    <td>@reservation.Room.RoomNumber</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                     {
                         <td>
@@ -37,5 +37,5 @@
 }
 else
 {
-    <p class="lead text-secondary fw-bold mt-3">No reservation found!</p>
+    <p class="lead text-secondary fw-bold mt-3">No clients found!</p>
 }

@@ -3,5 +3,32 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome, @User.Identity.Name</h1>
+
+    <div class="text-start mt-5">
+        <h5>Per l'accesso sono stati configurati degli account default:</h5>
+        <ul>
+            <li class="mb-2">
+                <p class="m-0 mb-1">Profilo Admin</p>
+                <div class="ms-3">
+                    <p class="m-0">Email: admin@example.com</p>
+                    <p class="m-0">Password: adminadmin</p>
+                </div>
+            </li>
+            <li class="mb-2">
+                <p class="m-0 mb-1">Profilo Manager</p>
+                <div class="ms-3">
+                    <p class="m-0">Email: mario.mario@example.com</p>
+                    <p class="m-0">Password: mariomario</p>
+                </div>
+            </li>
+            <li class="mb-2">
+                <p class="m-0 mb-1">Profilo Employee</p>
+                <div class="ms-3">
+                    <p class="m-0">Email: luigi.mario@example.com</p>
+                    <p class="m-0">Password: luigimario</p>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>

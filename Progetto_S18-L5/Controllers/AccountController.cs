@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Progetto_S18_L5.Models;
 using Progetto_S18_L5.ViewModels;
 
@@ -30,6 +31,11 @@ namespace Progetto_S18_L5.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Manage()
         {
             return View();
         }
@@ -78,6 +84,10 @@ namespace Progetto_S18_L5.Controllers
                 new Claim(ClaimTypes.Name, user.FirstName ?? string.Empty),
                 new Claim(ClaimTypes.Surname, user.LastName ?? string.Empty),
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                // salvo l'id dell'utente loggato in un claim
+                new Claim(UserId, user.Id),
+                new Claim(ClaimTypes.SerialNumber, user.Id),
+                new Claim(ClaimTypes.DateOfBirth, user.Id),
             };
 
             foreach (var role in roles)
@@ -102,6 +112,12 @@ namespace Progetto_S18_L5.Controllers
 
         [AllowAnonymous]
         public IActionResult Register()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult RegisterEmployee()
         {
             return View();
         }
@@ -153,6 +169,32 @@ namespace Progetto_S18_L5.Controllers
             await _signInManager.SignOutAsync();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllClients()
+        {
+            var usersList = new UsersListViewModel();
+            usersList.Users = await _userManager
+                .Users.Include(u => u.ApplicationUserRole)
+                .Where(u => u.ApplicationUserRole == null || u.ApplicationUserRole.Count == 0)
+                .ToListAsync();
+
+            return PartialView("_ClientsList", usersList);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployee()
+        {
+            var usersList = new UsersListViewModel();
+
+            usersList.Users = await _userManager
+                .Users.Include(u => u.ApplicationUserRole)
+                .ThenInclude(ur => ur.Role)
+                .Where(u => u.ApplicationUserRole != null && u.ApplicationUserRole.Count > 0)
+                .ToListAsync();
+
+            return PartialView("_EmployeesList", usersList);
         }
     }
 }
