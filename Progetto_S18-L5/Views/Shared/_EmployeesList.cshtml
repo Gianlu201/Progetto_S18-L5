@@ -10,7 +10,7 @@
                 <th>Email</th>
                 <th>Phone number</th>
                 <th>Role</th>
-                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                @if (User.IsInRole("Admin"))
                 {
                     <th>Actions</th>
                 }
@@ -25,7 +25,7 @@
                     <td>@user.Email</td>
                     <td>@user.PhoneNumber</td>
                     <td>@user.ApplicationUserRole.FirstOrDefault().Role.Name</td>
-                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    @if (User.IsInRole("Admin"))
                     {
                         <td>
                             <a class="btn btn-sm btn-warning">Edit</a>
@@ -39,5 +39,5 @@
 }
 else
 {
-    <p class="lead text-secondary fw-bold mt-3">No clients found!</p>
+    <p class="lead text-secondary fw-bold mt-3">No employee found!</p>
 }

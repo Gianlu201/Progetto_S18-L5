@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Progetto_S18_L5.Models;
+using Progetto_S18_L5.Services;
 using Progetto_S18_L5.ViewModels;
 
 namespace Progetto_S18_L5.Controllers
@@ -16,18 +17,21 @@ namespace Progetto_S18_L5.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly AccountService _accountService;
 
         public static string UserId = "";
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager
+            RoleManager<ApplicationRole> roleManager,
+            AccountService accountService
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _accountService = accountService;
         }
 
         public IActionResult Index()
@@ -117,8 +121,14 @@ namespace Progetto_S18_L5.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult RegisterEmployee()
+        public async Task<IActionResult> RegisterEmployee()
         {
+            var rolesList = new RolesListViewModel();
+
+            rolesList.Roles = await _roleManager.Roles.ToListAsync();
+
+            ViewBag.Roles = rolesList;
+
             return View();
         }
 
@@ -159,6 +169,71 @@ namespace Progetto_S18_L5.Controllers
 
             //await _userManager.AddToRoleAsync(user, "Employee");
             //await _userManager.AddToRoleAsync(user, "Manager");
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> RegisterEmployee(
+            RegisterEmployeeViewModel registerEmployeeViewModel
+        )
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Invalid data";
+                return View(registerEmployeeViewModel);
+            }
+
+            var employeeId = Guid.NewGuid().ToString();
+
+            var newUser = new ApplicationUser()
+            {
+                Id = employeeId,
+                FirstName = registerEmployeeViewModel.FirstName,
+                LastName = registerEmployeeViewModel.LastName,
+                UserName = registerEmployeeViewModel.Email,
+                Email = registerEmployeeViewModel.Email,
+                PhoneNumber = registerEmployeeViewModel.PhoneNumber,
+            };
+
+            var result = await _userManager.CreateAsync(
+                newUser,
+                registerEmployeeViewModel.Password
+            );
+
+            if (!result.Succeeded)
+            {
+                TempData["Error"] = "Error creating user";
+                return View(registerEmployeeViewModel);
+            }
+
+            //await _userManager.AddToRoleAsync(user, "Employee");
+            //await _userManager.AddToRoleAsync(user, "Manager");
+
+            var user = await _userManager.FindByEmailAsync(registerEmployeeViewModel.Email);
+
+            if (user == null)
+            {
+                TempData["Error"] = "Error creating user";
+                return View(registerEmployeeViewModel);
+            }
+
+            var role = await _roleManager.FindByIdAsync(registerEmployeeViewModel.RoleId);
+
+            if (role == null || role.Name == null)
+            {
+                TempData["Error"] = "Error while inserting the role!";
+                return View(registerEmployeeViewModel);
+            }
+
+            var addingResult = await _accountService.AddUserRole(user, role);
+
+            if (!addingResult)
+            {
+                TempData["Error"] = "Error while inserting the role!";
+                return View(registerEmployeeViewModel);
+            }
 
             return RedirectToAction("Index", "Home");
         }

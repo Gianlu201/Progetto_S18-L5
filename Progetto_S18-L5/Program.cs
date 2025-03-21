@@ -67,6 +67,7 @@ builder.Services.AddScoped<RoleManager<ApplicationRole>>();
 
 builder.Services.AddScoped<RoomService>();
 builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<AccountService>();
 
 var app = builder.Build();
 
