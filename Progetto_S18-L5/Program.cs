@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Progetto_S18_L5.Data;
 using Progetto_S18_L5.Models;
+using Progetto_S18_L5.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,9 @@ builder
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 builder.Services.AddScoped<RoleManager<ApplicationRole>>();
+
+builder.Services.AddScoped<RoomService>();
+builder.Services.AddScoped<ReservationService>();
 
 var app = builder.Build();
 

@@ -23,5 +23,7 @@ namespace Progetto_S18_L5.ViewModels
         [Required]
         [Display(Name = "State")]
         public required bool State { get; set; }
+
+        public required string EmployeeId { get; set; }
     }
 }

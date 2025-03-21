@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Reservations";
+}
+
+<div class="container">
+    <h1>Reservations</h1>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <div>
+            <a class="btn btn-primary" asp-controller="Reservation" asp-action="Add">Add reservation</a>
+        </div>
+    }
+
+    <div id="reservationsBox"></div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            load();
+        })
+
+
+        async function load() {
+            let reservationsBox = document.getElementById('reservationsBox');
+
+            const response = await fetch('Reservation/GetAllReservations', {
+                method: 'GET'
+            });
+
+            if (response.ok) {
+                const data = await response.text();
+
+                console.log(data);
+
+                reservationsBox.innerHTML = data;
+                
+            }
+
+
+        }
+
+
+    </script>
+}

@@ -1,41 +1,74 @@
-﻿@model AddReservationViewModel
+﻿@using Progetto_S18_L5.Controllers
+@model AddReservationViewModel
 
 @{
     ViewData["Title"] = "Add reservation";
     var clients = ViewBag.Clients as List<ApplicationUser>;
+    var roomsList = ViewBag.RoomsAvailable as RoomsListViewModel;
+    var id = AccountController.UserId;
 }
 
-@if(true){}
-
 <div class="container">
-    <form class="w-50 mx-auto" method="post" asp-controller="Account" asp-action="Register">
-        <div class="my-2">
-            <label class="form-label" for="clientId" asp-for="ClientId"></label>
-            <select class="form-select" id="clientId" asp-for="ClientId"></select>
-        </div>
+    @* @if(clients?.Count <= 0)
+    {
+        <p class="lead text-secondary text-center">No clients found! You need to register a client first!</p>
+    } else if(roomsList?.Rooms.Count <= 0)
+    {
+        <p class="lead text-secondary text-center">No room is available now!</p>
+    }
+    else
+    { *@
+        <form class="w-50 mx-auto" method="post" asp-controller="Reservation" asp-action="Add">
+            <div class="my-2">
+                <label class="form-label" for="clientId" asp-for="ClientId"></label>
+                <select class="form-select" id="clientId" asp-for="ClientId">
+                    <option value="">-- select a client --</option>
+                    @foreach (var client in clients)
+                    {
+                        <option value="@client.Id">@client.FirstName @client.LastName</option>
+                    }
+                </select>
+            </div>
 
-        <div class="my-2">
-            <label class="form-label mb-1" for="checkIn" asp-for="CheckIn"></label>
-            <input type="date" class="form-control" id="checkIn" asp-for="CheckIn" />
-            <span class="text-danger" asp-validation-for="CheckIn"></span>
-        </div>
+            <div class="my-2">
+                <label class="form-label" for="roomId" asp-for="RoomId"></label>
+                <select class="form-select" id="roomId" asp-for="RoomId">
+                    <option value="">-- select a room --</option>
+                    @if (roomsList != null && roomsList.Rooms != null && roomsList.Rooms.Count > 0)
+                    {
+                        @foreach (var room in roomsList.Rooms)
+                        {
+                            <option value="@room.RoomId">Room @room.RoomNumber <span class="small">(for @room.RoomType.MaxOccupancy people)</span></option>
+                        }
+                    }
 
-        <div class="my-2">
-            <label class="form-label mb-1" for="checkOut" asp-for="CheckOut"></label>
-            <input type="date" class="form-control" id="checkOut" asp-for="CheckOut" />
-            <span class="text-danger" asp-validation-for="CheckOut"></span>
-        </div>
+                </select>
+            </div>
 
-        <div class="my-2">
-            <input type="checkbox" asp-for="State" id="state" class="form-check-input" />
-            <label class="form-check-label" for="state" asp-for="State"></label>
-        </div>
-        
+            <div class="my-2">
+                <label class="form-label mb-1" for="checkIn" asp-for="CheckIn"></label>
+                <input type="date" class="form-control" id="checkIn" asp-for="CheckIn" />
+                <span class="text-danger" asp-validation-for="CheckIn"></span>
+            </div>
 
-        <div class="d-flex justify-content-end my-2">
-            <button class="btn btn-success">Register</button>
-        </div>
-    </form>
+            <div class="my-2">
+                <label class="form-label mb-1" for="checkOut" asp-for="CheckOut"></label>
+                <input type="date" class="form-control" id="checkOut" asp-for="CheckOut" />
+                <span class="text-danger" asp-validation-for="CheckOut"></span>
+            </div>
+
+            <div class="my-2">
+                <input type="checkbox" asp-for="State" id="state" class="form-check-input" />
+                <label class="form-check-label" for="state" asp-for="State"></label>
+            </div>
+
+            <input hidden asp-for="EmployeeId" value="@id" />
+
+            <div class="d-flex justify-content-end my-2">
+                <button type="submit" class="btn btn-success">Register</button>
+            </div>
+        </form>
+    @* } *@
 </div>
 
 @section Scripts {

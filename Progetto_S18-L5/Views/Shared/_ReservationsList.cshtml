@@ -1,0 +1,29 @@
+﻿@model ReservationsListViewModel
+
+@if (Model.Reservations.Count > 0)
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Room number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reservation in Model.Reservations)
+            {
+                <tr>
+                    <td>@reservation.Client.FirstName</td>
+                    <td>@reservation.Client.LastName</td>
+                    <td>@reservation.Client.Email</td>
+                    <td>@reservation.Room.RoomNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else {
+    <p class="lead text-secondary fw-bold mt-3">No reservation found!</p>
+}

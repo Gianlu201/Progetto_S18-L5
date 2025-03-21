@@ -16,6 +16,8 @@ namespace Progetto_S18_L5.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
+        public static string UserId = "";
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -59,7 +61,7 @@ namespace Progetto_S18_L5.Controllers
             var signInResult = await _signInManager.PasswordSignInAsync(
                 user,
                 loginViewModel.Password,
-                true,
+                false,
                 false
             );
 
@@ -92,6 +94,8 @@ namespace Progetto_S18_L5.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity)
             );
+
+            UserId = user.Id;
 
             return RedirectToAction("Index", "Home");
         }
