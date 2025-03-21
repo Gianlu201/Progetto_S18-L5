@@ -12,7 +12,7 @@ using Progetto_S18_L5.Data;
 namespace Progetto_S18_L5.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250321094954_Initial")]
+    [Migration("20250321112036_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -152,14 +152,14 @@ namespace Progetto_S18_L5.Migrations
                         new
                         {
                             Id = "25b30e78-3e7c-49cd-b682-19c58159e3f1",
-                            Name = "ApplicationUser",
-                            NormalizedName = "APPLICATIONUSER"
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
                             Id = "849b8726-44b3-434b-9b18-48a4e8d4e9dd",
-                            Name = "ApplicationRole",
-                            NormalizedName = "APPLICATIONROLE"
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
                         });
                 });
 
@@ -234,6 +234,65 @@ namespace Progetto_S18_L5.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "51c6680e-5cfa-40a8-b200-47d2d8481f65",
+                            Email = "admin@example.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==",
+                            PhoneNumber = "0000000000",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8a004169-727e-4e5e-8c1e-7ddf3d62c43b",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@example.com"
+                        },
+                        new
+                        {
+                            Id = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a2974c78-f27e-4392-94a7-0db07661c441",
+                            Email = "mario.mario@examople.com",
+                            EmailConfirmed = false,
+                            FirstName = "Mario",
+                            LastName = "Mario",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MARIO.MARIO@EXAMPLE.COM",
+                            NormalizedUserName = "MARIO.MARIO@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==",
+                            PhoneNumber = "1111111111",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "46efe68e-4ec9-4d25-bbb1-14e99f07c8e0",
+                            TwoFactorEnabled = false,
+                            UserName = "mario.mario@example.com"
+                        },
+                        new
+                        {
+                            Id = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a5904b41-0e50-41d4-999e-46b189cd40b4",
+                            Email = "luigi.mario@example.com",
+                            EmailConfirmed = false,
+                            FirstName = "Luigi",
+                            LastName = "Mario",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "LUIGI.MARIO@EXAMPLE.COM",
+                            NormalizedUserName = "LUIGI.MARIO@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==",
+                            PhoneNumber = "2222222222",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3c79a20a-ad34-405e-9668-298240ce7c49",
+                            TwoFactorEnabled = false,
+                            UserName = "luigi.mario@example.com"
+                        });
                 });
 
             modelBuilder.Entity("Progetto_S18_L5.Models.ApplicationUserRole", b =>
@@ -249,6 +308,23 @@ namespace Progetto_S18_L5.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
+                            RoleId = "8d64359a-fda6-4096-b40d-f1375775244d"
+                        },
+                        new
+                        {
+                            UserId = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
+                            RoleId = "849b8726-44b3-434b-9b18-48a4e8d4e9dd"
+                        },
+                        new
+                        {
+                            UserId = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
+                            RoleId = "25b30e78-3e7c-49cd-b682-19c58159e3f1"
+                        });
                 });
 
             modelBuilder.Entity("Progetto_S18_L5.Models.Reservation", b =>

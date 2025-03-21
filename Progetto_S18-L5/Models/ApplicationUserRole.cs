@@ -5,13 +5,13 @@ namespace Progetto_S18_L5.Models
 {
     public class ApplicationUserRole : IdentityUserRole<string>
     {
-        public new required Guid UserId { get; set; }
-        public new required Guid RoleId { get; set; }
+        public new required string UserId { get; set; }
+        public new required string RoleId { get; set; }
 
         [ForeignKey("UserId")]
-        public required ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         [ForeignKey("RoleId")]
-        public required ApplicationRole Role { get; set; }
+        public ApplicationRole Role { get; set; }
     }
 }

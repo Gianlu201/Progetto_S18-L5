@@ -114,14 +114,14 @@ namespace Progetto_S18_L5.Data
                     new ApplicationRole()
                     {
                         Id = "25b30e78-3e7c-49cd-b682-19c58159e3f1",
-                        Name = "ApplicationUser",
-                        NormalizedName = "APPLICATIONUSER",
+                        Name = "Employee",
+                        NormalizedName = "EMPLOYEE",
                     },
                     new ApplicationRole()
                     {
                         Id = "849b8726-44b3-434b-9b18-48a4e8d4e9dd",
-                        Name = "ApplicationRole",
-                        NormalizedName = "APPLICATIONROLE",
+                        Name = "Manager",
+                        NormalizedName = "MANAGER",
                     }
                 );
 
@@ -172,34 +172,70 @@ namespace Progetto_S18_L5.Data
                 );
 
             // Inserisce valori nella tabella ApplicationUser
-            //modelBuilder
-            //    .Entity<ApplicationUser>()
-            //    .HasData(
-            //        new ApplicationUser()
-            //        {
-            //            Id = "55e83e62-2057-45b0-82fe-33a4cba69a2e\r\n",
-            //            FirstName = "Admin",
-            //            LastName = "Admin",
-            //            Email = "admin@example.com",
-            //            UserName = "admin@example.com",
-            //        },
-            //        new ApplicationUser()
-            //        {
-            //            Id = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
-            //            FirstName = "Mario",
-            //            LastName = "Mario",
-            //            Email = "mario.mario@examople.com",
-            //            UserName = "mario.mario@example.com",
-            //        },
-            //        new ApplicationUser()
-            //        {
-            //            Id = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
-            //            FirstName = "Luigi",
-            //            LastName = "Mario",
-            //            Email = "luigi.mario@example.com",
-            //            UserName = "luigi.mario@example.com",
-            //        }
-            //    );
+            modelBuilder
+                .Entity<ApplicationUser>()
+                .HasData(
+                    new ApplicationUser()
+                    {
+                        Id = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
+                        FirstName = "Admin",
+                        LastName = "Admin",
+                        Email = "admin@example.com",
+                        UserName = "admin@example.com",
+                        NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                        NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                        PasswordHash =
+                            "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==",
+                        PhoneNumber = "0000000000",
+                    },
+                    new ApplicationUser()
+                    {
+                        Id = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
+                        FirstName = "Mario",
+                        LastName = "Mario",
+                        Email = "mario.mario@examople.com",
+                        UserName = "mario.mario@example.com",
+                        NormalizedUserName = "MARIO.MARIO@EXAMPLE.COM",
+                        NormalizedEmail = "MARIO.MARIO@EXAMPLE.COM",
+                        PasswordHash =
+                            "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==",
+                        PhoneNumber = "1111111111",
+                    },
+                    new ApplicationUser()
+                    {
+                        Id = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
+                        FirstName = "Luigi",
+                        LastName = "Mario",
+                        Email = "luigi.mario@example.com",
+                        UserName = "luigi.mario@example.com",
+                        NormalizedUserName = "LUIGI.MARIO@EXAMPLE.COM",
+                        NormalizedEmail = "LUIGI.MARIO@EXAMPLE.COM",
+                        PasswordHash =
+                            "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==",
+                        PhoneNumber = "2222222222",
+                    }
+                );
+
+            // Inserisce valori nella tabella ApplicationUserRoles
+            modelBuilder
+                .Entity<ApplicationUserRole>()
+                .HasData(
+                    new ApplicationUserRole()
+                    {
+                        UserId = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
+                        RoleId = "8d64359a-fda6-4096-b40d-f1375775244d",
+                    },
+                    new ApplicationUserRole()
+                    {
+                        UserId = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
+                        RoleId = "849b8726-44b3-434b-9b18-48a4e8d4e9dd",
+                    },
+                    new ApplicationUserRole()
+                    {
+                        UserId = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
+                        RoleId = "25b30e78-3e7c-49cd-b682-19c58159e3f1",
+                    }
+                );
         }
     }
 }

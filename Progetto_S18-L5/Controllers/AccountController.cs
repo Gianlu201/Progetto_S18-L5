@@ -137,7 +137,7 @@ namespace Progetto_S18_L5.Controllers
                 return View(registerViewModel);
             }
 
-            //await _userManager.AddToRoleAsync(user, "Client");
+            await _userManager.AddToRoleAsync(user, "ApplicationUser");
 
             return RedirectToAction("Index", "Home");
         }

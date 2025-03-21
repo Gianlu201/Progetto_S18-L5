@@ -23,10 +23,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("ApplicazionRole")))
+                        @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Reservations</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ManageReservations">Reservations</a>
+                            </li>
+                        }
+                        else if (User.Identity.IsAuthenticated && User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Reservations">Reservations</a>
                             </li>
                         }
 

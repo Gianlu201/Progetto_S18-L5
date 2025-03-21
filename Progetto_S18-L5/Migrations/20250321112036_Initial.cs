@@ -227,9 +227,19 @@ namespace Progetto_S18_L5.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "25b30e78-3e7c-49cd-b682-19c58159e3f1", null, "ApplicationUser", "APPLICATIONUSER" },
-                    { "849b8726-44b3-434b-9b18-48a4e8d4e9dd", null, "ApplicationRole", "APPLICATIONROLE" },
+                    { "25b30e78-3e7c-49cd-b682-19c58159e3f1", null, "Employee", "EMPLOYEE" },
+                    { "849b8726-44b3-434b-9b18-48a4e8d4e9dd", null, "Manager", "MANAGER" },
                     { "8d64359a-fda6-4096-b40d-f1375775244d", null, "Admin", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "55e83e62-2057-45b0-82fe-33a4cba69a2e", 0, "51c6680e-5cfa-40a8-b200-47d2d8481f65", "admin@example.com", false, "Admin", "Admin", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==", "0000000000", false, "8a004169-727e-4e5e-8c1e-7ddf3d62c43b", false, "admin@example.com" },
+                    { "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2", 0, "a5904b41-0e50-41d4-999e-46b189cd40b4", "luigi.mario@example.com", false, "Luigi", "Mario", false, null, "LUIGI.MARIO@EXAMPLE.COM", "LUIGI.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==", "2222222222", false, "3c79a20a-ad34-405e-9668-298240ce7c49", false, "luigi.mario@example.com" },
+                    { "7f11db70-49f5-4c66-bad3-51085c2bd27a", 0, "a2974c78-f27e-4392-94a7-0db07661c441", "mario.mario@examople.com", false, "Mario", "Mario", false, null, "MARIO.MARIO@EXAMPLE.COM", "MARIO.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==", "1111111111", false, "46efe68e-4ec9-4d25-bbb1-14e99f07c8e0", false, "mario.mario@example.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -240,6 +250,16 @@ namespace Progetto_S18_L5.Migrations
                     { new Guid("336d4f29-603c-4962-b81a-a11e994136fa"), 4, "Four-bed room" },
                     { new Guid("6c5b01f7-d730-437c-a712-92e4c706cebe"), 2, "Twin room" },
                     { new Guid("759b2d69-57a9-4284-9850-b771ab1b662c"), 3, "Three-bed room" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "8d64359a-fda6-4096-b40d-f1375775244d", "55e83e62-2057-45b0-82fe-33a4cba69a2e" },
+                    { "25b30e78-3e7c-49cd-b682-19c58159e3f1", "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2" },
+                    { "849b8726-44b3-434b-9b18-48a4e8d4e9dd", "7f11db70-49f5-4c66-bad3-51085c2bd27a" }
                 });
 
             migrationBuilder.InsertData(
