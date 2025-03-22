@@ -134,7 +134,8 @@ namespace Progetto_S18_L5.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserRoleId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -243,9 +244,9 @@ namespace Progetto_S18_L5.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "55e83e62-2057-45b0-82fe-33a4cba69a2e", 0, "deab0e89-dc2b-4863-837e-06db55d93754", "admin@example.com", false, "Admin", "Admin", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==", "0000000000", false, "a0cb5a26-13ba-4047-b3c7-cd4a4862357d", false, "admin@example.com" },
-                    { "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2", 0, "347d69e0-a40f-4cfe-a07b-4efb2ea3e70f", "luigi.mario@example.com", false, "Luigi", "Mario", false, null, "LUIGI.MARIO@EXAMPLE.COM", "LUIGI.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==", "2222222222", false, "811e94eb-e873-4557-906d-9cac64e6bdac", false, "luigi.mario@example.com" },
-                    { "7f11db70-49f5-4c66-bad3-51085c2bd27a", 0, "8a7e59fc-e210-4eab-9d62-0219218b0bff", "mario.mario@examople.com", false, "Mario", "Mario", false, null, "MARIO.MARIO@EXAMPLE.COM", "MARIO.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==", "1111111111", false, "3e48fca0-5e10-4b37-9de7-8fb866d09070", false, "mario.mario@example.com" }
+                    { "55e83e62-2057-45b0-82fe-33a4cba69a2e", 0, "eb822e08-19d1-445f-b0b2-1ddf4c729ebe", "admin@example.com", false, "Admin", "Admin", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==", "0000000000", false, "caf5b9b1-a6a5-40f7-b53f-e07b7f3a0854", false, "admin@example.com" },
+                    { "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2", 0, "d43df5a4-dc0b-4725-9ab2-c165b8e5ec9e", "luigi.mario@example.com", false, "Luigi", "Mario", false, null, "LUIGI.MARIO@EXAMPLE.COM", "LUIGI.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==", "2222222222", false, "9ff7ba88-3085-4748-a2c0-63469447bf6f", false, "luigi.mario@example.com" },
+                    { "7f11db70-49f5-4c66-bad3-51085c2bd27a", 0, "bb9ae3b0-c197-40ed-bcbf-b590a4204f27", "mario.mario@examople.com", false, "Mario", "Mario", false, null, "MARIO.MARIO@EXAMPLE.COM", "MARIO.MARIO@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==", "1111111111", false, "db086caa-ecc2-4f36-930e-825194263b52", false, "mario.mario@example.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -260,12 +261,12 @@ namespace Progetto_S18_L5.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
-                columns: new[] { "RoleId", "UserId" },
+                columns: new[] { "RoleId", "UserId", "UserRoleId" },
                 values: new object[,]
                 {
-                    { "8d64359a-fda6-4096-b40d-f1375775244d", "55e83e62-2057-45b0-82fe-33a4cba69a2e" },
-                    { "25b30e78-3e7c-49cd-b682-19c58159e3f1", "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2" },
-                    { "849b8726-44b3-434b-9b18-48a4e8d4e9dd", "7f11db70-49f5-4c66-bad3-51085c2bd27a" }
+                    { "8d64359a-fda6-4096-b40d-f1375775244d", "55e83e62-2057-45b0-82fe-33a4cba69a2e", "ffaec466-8d00-4538-9d77-3c9b13c01178" },
+                    { "25b30e78-3e7c-49cd-b682-19c58159e3f1", "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2", "499bc9f4-93e0-445a-9d20-352521f46992" },
+                    { "849b8726-44b3-434b-9b18-48a4e8d4e9dd", "7f11db70-49f5-4c66-bad3-51085c2bd27a", "4ac90c70-f29d-4af0-a914-f7235c851ad4" }
                 });
 
             migrationBuilder.InsertData(

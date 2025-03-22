@@ -237,7 +237,7 @@ namespace Progetto_S18_L5.Migrations
                         {
                             Id = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "deab0e89-dc2b-4863-837e-06db55d93754",
+                            ConcurrencyStamp = "eb822e08-19d1-445f-b0b2-1ddf4c729ebe",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -248,7 +248,7 @@ namespace Progetto_S18_L5.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEPTjFiaYaGtq8tsslxnhffNqhCeoVvpygVnS8vRbrx/pI2O2Nb7Q75iDvT4ZIQWV4g==",
                             PhoneNumber = "0000000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a0cb5a26-13ba-4047-b3c7-cd4a4862357d",
+                            SecurityStamp = "caf5b9b1-a6a5-40f7-b53f-e07b7f3a0854",
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com"
                         },
@@ -256,7 +256,7 @@ namespace Progetto_S18_L5.Migrations
                         {
                             Id = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8a7e59fc-e210-4eab-9d62-0219218b0bff",
+                            ConcurrencyStamp = "bb9ae3b0-c197-40ed-bcbf-b590a4204f27",
                             Email = "mario.mario@examople.com",
                             EmailConfirmed = false,
                             FirstName = "Mario",
@@ -267,7 +267,7 @@ namespace Progetto_S18_L5.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEKaVk2PilFpBF+5mhGmCiGOtIF+qHjjpf0Z4ukKkpAnff1/s2WJ/UiFQh4aZ9iP2YQ==",
                             PhoneNumber = "1111111111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3e48fca0-5e10-4b37-9de7-8fb866d09070",
+                            SecurityStamp = "db086caa-ecc2-4f36-930e-825194263b52",
                             TwoFactorEnabled = false,
                             UserName = "mario.mario@example.com"
                         },
@@ -275,7 +275,7 @@ namespace Progetto_S18_L5.Migrations
                         {
                             Id = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "347d69e0-a40f-4cfe-a07b-4efb2ea3e70f",
+                            ConcurrencyStamp = "d43df5a4-dc0b-4725-9ab2-c165b8e5ec9e",
                             Email = "luigi.mario@example.com",
                             EmailConfirmed = false,
                             FirstName = "Luigi",
@@ -286,7 +286,7 @@ namespace Progetto_S18_L5.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEHyzjydlPHBKYr6FC7KflthqGK/GbH+NZI8pY+a4rzNrqB7yy7z2HO+fuvlBfxjk5w==",
                             PhoneNumber = "2222222222",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "811e94eb-e873-4557-906d-9cac64e6bdac",
+                            SecurityStamp = "9ff7ba88-3085-4748-a2c0-63469447bf6f",
                             TwoFactorEnabled = false,
                             UserName = "luigi.mario@example.com"
                         });
@@ -300,6 +300,9 @@ namespace Progetto_S18_L5.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserRoleId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -310,17 +313,20 @@ namespace Progetto_S18_L5.Migrations
                         new
                         {
                             UserId = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
-                            RoleId = "8d64359a-fda6-4096-b40d-f1375775244d"
+                            RoleId = "8d64359a-fda6-4096-b40d-f1375775244d",
+                            UserRoleId = "ffaec466-8d00-4538-9d77-3c9b13c01178"
                         },
                         new
                         {
                             UserId = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
-                            RoleId = "849b8726-44b3-434b-9b18-48a4e8d4e9dd"
+                            RoleId = "849b8726-44b3-434b-9b18-48a4e8d4e9dd",
+                            UserRoleId = "4ac90c70-f29d-4af0-a914-f7235c851ad4"
                         },
                         new
                         {
                             UserId = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
-                            RoleId = "25b30e78-3e7c-49cd-b682-19c58159e3f1"
+                            RoleId = "25b30e78-3e7c-49cd-b682-19c58159e3f1",
+                            UserRoleId = "499bc9f4-93e0-445a-9d20-352521f46992"
                         });
                 });
 

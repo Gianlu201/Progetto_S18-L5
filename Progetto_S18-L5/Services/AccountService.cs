@@ -9,21 +9,10 @@ namespace Progetto_S18_L5.Services
     public class AccountService
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AccountService(
-            ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager
-        )
+        public AccountService(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
         }
 
         public async Task<bool> AddUserRole(ApplicationUser user, ApplicationRole role)
@@ -106,7 +95,18 @@ namespace Progetto_S18_L5.Services
                 employee.UserName = editEmployee.Email;
                 employee.NormalizedUserName = editEmployee.Email.ToUpper();
 
-                userRole.RoleId = editEmployee.RoleId;
+                if (userRole.RoleId != editEmployee.RoleId)
+                {
+                    _context.UserRoles.Remove(userRole);
+
+                    _context.UserRoles.Add(
+                        new ApplicationUserRole
+                        {
+                            UserId = employee.Id,
+                            RoleId = editEmployee.RoleId,
+                        }
+                    );
+                }
 
                 return await _context.SaveChangesAsync() > 0;
             }

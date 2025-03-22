@@ -236,16 +236,19 @@ namespace Progetto_S18_L5.Data
                 .HasData(
                     new ApplicationUserRole()
                     {
+                        UserRoleId = "ffaec466-8d00-4538-9d77-3c9b13c01178",
                         UserId = "55e83e62-2057-45b0-82fe-33a4cba69a2e",
                         RoleId = "8d64359a-fda6-4096-b40d-f1375775244d",
                     },
                     new ApplicationUserRole()
                     {
+                        UserRoleId = "4ac90c70-f29d-4af0-a914-f7235c851ad4",
                         UserId = "7f11db70-49f5-4c66-bad3-51085c2bd27a",
                         RoleId = "849b8726-44b3-434b-9b18-48a4e8d4e9dd",
                     },
                     new ApplicationUserRole()
                     {
+                        UserRoleId = "499bc9f4-93e0-445a-9d20-352521f46992",
                         UserId = "766609fc-a1bd-4ca8-bc3b-8167dd9ba0f2",
                         RoleId = "25b30e78-3e7c-49cd-b682-19c58159e3f1",
                     }
