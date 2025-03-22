@@ -13,7 +13,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="w-50 mx-auto" id="editReservationForm">
+                <form class="w-75 mx-auto" id="editReservationForm">
                     <input hidden asp-for="ReservationId" value="@Model.ReservationId" />
 
                     <div class="my-2">
@@ -30,7 +30,8 @@
                     <div class="my-2">
                         <label class="form-label" for="roomId" asp-for="RoomId"></label>
                         <select class="form-select" id="roomId" asp-for="RoomId">
-                            <option value="">-- select a room --</option>
+                            <option value="">-- select a room only if you want to change it --</option>
+                            @* <option value="@Model.RoomId">Room @Model.Room.RoomNumber <span class="small">(for @Model.Room.RoomType.MaxOccupancy)</span></option> *@
                             @if (roomsList != null && roomsList.Rooms != null && roomsList.Rooms.Count > 0)
                             {
                                 @foreach (var room in roomsList.Rooms)

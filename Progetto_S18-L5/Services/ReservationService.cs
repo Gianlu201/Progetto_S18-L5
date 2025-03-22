@@ -64,7 +64,16 @@ namespace Progetto_S18_L5.Services
                     EmployeeId = employeeId,
                 };
 
+                var room = _context.Rooms.FirstOrDefault(r => r.RoomId == addReservation.RoomId);
+
+                if (room == null)
+                {
+                    return false;
+                }
+
                 _context.Reservations.Add(reservation);
+
+                room.IsAvailable = false;
 
                 return await TrySaveAsync();
             }
@@ -82,6 +91,8 @@ namespace Progetto_S18_L5.Services
                     .Reservations.Include(r => r.Client)
                     .Include(r => r.Room)
                     .Include(r => r.Employee)
+                    .Include(r => r.Room)
+                    .ThenInclude(room => room.RoomType)
                     .FirstOrDefaultAsync(r => r.ReservationId == id);
 
                 if (reservation == null)
@@ -91,7 +102,7 @@ namespace Progetto_S18_L5.Services
                         CheckIn = DateTime.Now,
                         CheckOut = DateTime.Now,
                         ClientId = "",
-                        RoomId = Guid.Empty,
+                        RoomId = "",
                         State = false,
                         ReservationId = "",
                     };
@@ -102,7 +113,7 @@ namespace Progetto_S18_L5.Services
                     CheckIn = reservation.CheckIn,
                     CheckOut = reservation.CheckOut,
                     ClientId = reservation.ClientId,
-                    RoomId = reservation.RoomId,
+                    RoomId = reservation.RoomId.ToString(),
                     State = reservation.State,
                     ReservationId = reservation.ReservationId.ToString(),
                 };
@@ -114,7 +125,7 @@ namespace Progetto_S18_L5.Services
                     CheckIn = DateTime.Now,
                     CheckOut = DateTime.Now,
                     ClientId = "",
-                    RoomId = Guid.Empty,
+                    RoomId = "",
                     State = false,
                     ReservationId = "",
                 };
@@ -140,9 +151,48 @@ namespace Progetto_S18_L5.Services
                 reservation.CheckIn = editReservation.CheckIn;
                 reservation.CheckOut = editReservation.CheckOut;
                 reservation.ClientId = editReservation.ClientId;
-                reservation.RoomId = editReservation.RoomId;
                 reservation.State = editReservation.State;
                 reservation.EmployeeId = userId;
+
+                // il controllo di modifica è andato a diventare sempre più contorto, ma è necessario per verificare che venga
+                // effettivamente inserita una nuova stanza e quindi va a modificare la stanza associata alla prenotazione
+                // se e solo se gliene viene assegnata una nuova, altrimenti il controllo passa oltre
+                if (
+                    editReservation.RoomId != null
+                    && Guid.TryParse(editReservation.RoomId, out Guid newRoomId)
+                    && reservation.RoomId.ToString() != editReservation.RoomId
+                )
+                {
+                    var oldRoom = await _context.Rooms.FirstOrDefaultAsync(r =>
+                        r.RoomId == reservation.RoomId
+                    );
+                    var newRoom = await _context.Rooms.FirstOrDefaultAsync(r =>
+                        r.RoomId.ToString() == editReservation.RoomId
+                    );
+                    if (oldRoom != null && newRoom != null)
+                    {
+                        oldRoom.IsAvailable = true;
+                        newRoom.IsAvailable = false;
+
+                        reservation.RoomId = Guid.Parse(editReservation.RoomId);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                if (reservation.State == false)
+                {
+                    var room = await _context.Rooms.FirstOrDefaultAsync(r =>
+                        r.RoomId == reservation.RoomId
+                    );
+
+                    if (room != null)
+                    {
+                        room.IsAvailable = true;
+                    }
+                }
 
                 return await TrySaveAsync();
             }

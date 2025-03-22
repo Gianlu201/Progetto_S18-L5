@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Progetto_S18_L5.Models;
 
 namespace Progetto_S18_L5.ViewModels
 {
@@ -10,9 +11,8 @@ namespace Progetto_S18_L5.ViewModels
         [Display(Name = "Client")]
         public required string ClientId { get; set; }
 
-        [Required]
         [Display(Name = "Room")]
-        public required Guid RoomId { get; set; }
+        public string? RoomId { get; set; }
 
         [Required]
         [Display(Name = "Check-in")]
@@ -25,5 +25,8 @@ namespace Progetto_S18_L5.ViewModels
         [Required]
         [Display(Name = "State")]
         public required bool State { get; set; }
+
+        // navigazione
+        public Room? Room { get; set; }
     }
 }
