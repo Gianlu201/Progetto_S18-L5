@@ -88,10 +88,7 @@ namespace Progetto_S18_L5.Controllers
                 new Claim(ClaimTypes.Name, user.FirstName ?? string.Empty),
                 new Claim(ClaimTypes.Surname, user.LastName ?? string.Empty),
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-                // salvo l'id dell'utente loggato in un claim
-                new Claim(UserId, user.Id),
-                new Claim(ClaimTypes.SerialNumber, user.Id),
-                new Claim(ClaimTypes.DateOfBirth, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
             foreach (var role in roles)

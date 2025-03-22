@@ -1,11 +1,9 @@
-﻿@using Progetto_S18_L5.Controllers
-@model AddReservationViewModel
+﻿@model AddReservationViewModel
 
 @{
     ViewData["Title"] = "Add reservation";
     var clients = ViewBag.Clients as List<ApplicationUser>;
     var roomsList = ViewBag.RoomsAvailable as RoomsListViewModel;
-    var id = AccountController.UserId;
 }
 
 <div class="container">
@@ -48,12 +46,12 @@
             <span class="text-danger" asp-validation-for="CheckOut"></span>
         </div>
 
-        <div class="my-2">
+        @* <div class="my-2">
             <input type="checkbox" asp-for="State" id="state" class="form-check-input" />
             <label class="form-check-label" for="state" asp-for="State"></label>
-        </div>
-
-        <input hidden asp-for="EmployeeId" value="@id" />
+        </div> *@
+        
+        <input type="checkbox" asp-for="State" value="true" hidden checked />
 
         @if (TempData["Error"] != null)
         {

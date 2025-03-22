@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -63,9 +64,36 @@ namespace Progetto_S18_L5.Controllers
                 return View(addReservation);
             }
 
-            var result = await _reservationService.AddReservation(addReservation);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _reservationService.AddReservation(addReservation, userId);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("Reservation/Edit/{id:guid}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var response = await _reservationService.GetReservationByIdAsync(id);
+
+            if (response.ReservationId == "")
+            {
+                TempData["Error"] = "Reservation not found!";
+                return RedirectToAction("Index");
+            }
+
+            var clientsList = await _userManager
+                .Users.Include(u => u.ApplicationUserRole)
+                .Where(u => u.ApplicationUserRole == null || u.ApplicationUserRole.Count == 0)
+                .ToListAsync();
+
+            ViewBag.Clients = clientsList;
+
+            var roomsList = await _roomService.GetAvailableRoomsAsync();
+
+            ViewBag.RoomsAvailable = roomsList;
+
+            return PartialView("_ReservationEditModal", response);
         }
     }
 }

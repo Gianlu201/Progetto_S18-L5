@@ -35,6 +35,7 @@ namespace Progetto_S18_L5.Services
                 reservationsList.Reservations = await _context
                     .Reservations.Include(r => r.Client)
                     .Include(r => r.Room)
+                    .Include(r => r.Employee)
                     .ToListAsync();
 
                 return reservationsList;
@@ -45,7 +46,10 @@ namespace Progetto_S18_L5.Services
             }
         }
 
-        public async Task<bool> AddReservation(AddReservationViewModel addReservation)
+        public async Task<bool> AddReservation(
+            AddReservationViewModel addReservation,
+            string employeeId
+        )
         {
             try
             {
@@ -57,7 +61,7 @@ namespace Progetto_S18_L5.Services
                     CheckIn = addReservation.CheckIn,
                     CheckOut = addReservation.CheckOut,
                     State = addReservation.State,
-                    EmployeeId = addReservation.EmployeeId,
+                    EmployeeId = employeeId,
                 };
 
                 _context.Reservations.Add(reservation);
@@ -67,6 +71,53 @@ namespace Progetto_S18_L5.Services
             catch
             {
                 return false;
+            }
+        }
+
+        public async Task<EditReservationViewModel> GetReservationByIdAsync(Guid id)
+        {
+            try
+            {
+                var reservation = await _context
+                    .Reservations.Include(r => r.Client)
+                    .Include(r => r.Room)
+                    .Include(r => r.Employee)
+                    .FirstOrDefaultAsync(r => r.ReservationId == id);
+
+                if (reservation == null)
+                {
+                    return new EditReservationViewModel()
+                    {
+                        CheckIn = DateTime.Now,
+                        CheckOut = DateTime.Now,
+                        ClientId = "",
+                        RoomId = Guid.Empty,
+                        State = false,
+                        ReservationId = "",
+                    };
+                }
+
+                return new EditReservationViewModel()
+                {
+                    CheckIn = reservation.CheckIn,
+                    CheckOut = reservation.CheckOut,
+                    ClientId = reservation.ClientId,
+                    RoomId = reservation.RoomId,
+                    State = reservation.State,
+                    ReservationId = reservation.ReservationId.ToString(),
+                };
+            }
+            catch
+            {
+                return new EditReservationViewModel()
+                {
+                    CheckIn = DateTime.Now,
+                    CheckOut = DateTime.Now,
+                    ClientId = "",
+                    RoomId = Guid.Empty,
+                    State = false,
+                    ReservationId = "",
+                };
             }
         }
     }

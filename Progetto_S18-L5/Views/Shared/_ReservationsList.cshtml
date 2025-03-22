@@ -9,6 +9,7 @@
                 <th>Surname</th>
                 <th>Email</th>
                 <th>Room number</th>
+                <th>Operator</th>
                 @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                 {
                     <th>Actions</th>
@@ -23,11 +24,12 @@
                     <td>@reservation.Client.LastName</td>
                     <td>@reservation.Client.Email</td>
                     <td>@reservation.Room.RoomNumber</td>
+                    <td>@reservation.Employee.FirstName @reservation.Employee.LastName</td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                     {
                         <td>
-                            <a class="btn btn-sm btn-warning">Edit</a>
-                            <a class="btn btn-sm btn-danger">Delete</a>
+                            <button class="btn btn-sm btn-warning" onclick="showEditReservationModal('@reservation.ReservationId')">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
                         </td>
                     }
                 </tr>

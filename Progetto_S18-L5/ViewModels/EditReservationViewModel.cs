@@ -2,8 +2,10 @@
 
 namespace Progetto_S18_L5.ViewModels
 {
-    public class AddReservationViewModel
+    public class EditReservationViewModel
     {
+        public string ReservationId { get; set; }
+
         [Required]
         [Display(Name = "Client")]
         public required string ClientId { get; set; }
