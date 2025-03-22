@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Microsoft.AspNetCore.Identity;
 using Progetto_S18_L5.Data;
 using Progetto_S18_L5.Models;
 using Progetto_S18_L5.ViewModels;
@@ -8,10 +9,21 @@ namespace Progetto_S18_L5.Services
     public class AccountService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AccountService(ApplicationDbContext context)
+        public AccountService(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager
+        )
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task<bool> AddUserRole(ApplicationUser user, ApplicationRole role)
@@ -47,6 +59,54 @@ namespace Progetto_S18_L5.Services
                 client.NormalizedEmail = editClient.Email.ToUpper();
                 client.UserName = editClient.Email;
                 client.NormalizedUserName = editClient.Email.ToUpper();
+
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> EditEmployeeAsync(
+            EditEmployeeViewModel editEmployee,
+            ApplicationUser oldEmp
+        )
+        {
+            try
+            {
+                // utente che ha lo stesso id di editEmployee e vado ad includere il suo ruolo
+                var employee = _context.Users.FirstOrDefault(u =>
+                    u.Id == editEmployee.Id
+                    && u.ApplicationUserRole != null
+                    && u.ApplicationUserRole.Count > 0
+                );
+
+                //var employee = await _context.Users.FindAsync(editEmployee.Id);
+
+                var userRole = _context.UserRoles.FirstOrDefault(ur =>
+                    ur.UserId == editEmployee.Id
+                    && ur.RoleId == oldEmp.ApplicationUserRole.FirstOrDefault().RoleId
+                );
+
+                if (employee == null)
+                {
+                    return false;
+                }
+
+                if (userRole == null)
+                {
+                    return false;
+                }
+
+                employee.FirstName = editEmployee.FirstName;
+                employee.LastName = editEmployee.LastName;
+                employee.Email = editEmployee.Email;
+                employee.NormalizedEmail = editEmployee.Email.ToUpper();
+                employee.UserName = editEmployee.Email;
+                employee.NormalizedUserName = editEmployee.Email.ToUpper();
+
+                userRole.RoleId = editEmployee.RoleId;
 
                 return await _context.SaveChangesAsync() > 0;
             }

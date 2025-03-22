@@ -1,0 +1,68 @@
+﻿@model EditEmployeeViewModel
+
+@{
+    var rolesList = ViewBag.Roles as RolesListViewModel;
+}
+
+<div class="modal" id="editEmployeeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="w-50 mx-auto" id="editEmployeeForm">
+                    <input asp-for="Id" value="@Model.Id" hidden />
+
+                    <div class="my-2">
+                        <label class="form-label mb-1" for="firstName" asp-for="FirstName"></label>
+                        <input class="form-control" id="firstName" asp-for="FirstName" placeholder="Mario" />
+                        <span class="text-danger" asp-validation-for="FirstName"></span>
+                    </div>
+
+                    <div class="my-2">
+                        <label class="form-label mb-1" for="lastName" asp-for="LastName"></label>
+                        <input class="form-control" id="lastName" asp-for="LastName" placeholder="Rossi" />
+                        <span class="text-danger" asp-validation-for="LastName"></span>
+                    </div>
+
+                    <div class="my-2">
+                        <label class="form-label mb-1" for="phoneNumber" asp-for="PhoneNumber"></label>
+                        <input type="tel" class="form-control" id="phoneNumber" asp-for="PhoneNumber" placeholder="3405204785" />
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+
+                    <div class="my-2">
+                        <label class="form-label mb-1" for="email" asp-for="Email"></label>
+                        <input type="email" class="form-control" id="email" asp-for="Email" placeholder="mario.rossi@example.com" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+
+                    <div class="my-2">
+                        <label class="form-label" for="role" asp-for="RoleId"></label>
+                        <select class="form-select" id="role" asp-for="RoleId">
+                            <option value="">-- choose a role --</option>
+                            @foreach (var role in rolesList.Roles)
+                            {
+                                <option value="@role.Id">@role.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> @TempData["Error"].
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-end my-2">
+                        <button type="button" class="btn btn-success" onclick="sendEmployeeEditForm()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

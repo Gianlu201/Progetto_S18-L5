@@ -21,6 +21,8 @@
 
 </div>
 
+<div id="modalBox"></div>
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -39,6 +41,43 @@
                 console.log(data);
                 employeeBox.innerHTML = data;
 
+            }
+        }
+
+        async function showEmployeeEditModal(id) {
+            console.log("step1");
+            const response = await fetch(`/Account/EditEmployee/${id}`, {
+                method: 'GET'
+            });
+            console.log("step2");
+
+            if (response.ok) {
+                const data = await response.text();
+                const modalBox = document.getElementById('modalBox');
+                modalBox.innerHTML = data;
+                const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
+                modal.show();
+            }
+        }
+
+        async function sendEmployeeEditForm() {
+            const form = document.getElementById('editEmployeeForm');
+
+            const formData = new FormData(form);
+
+            const response = await fetch('/Account/EditEmployee', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                if (data.success) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
+                    modal.hide();
+                    init();
+                }
             }
         }
     </script>

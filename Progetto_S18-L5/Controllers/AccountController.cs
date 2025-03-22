@@ -356,5 +356,62 @@ namespace Progetto_S18_L5.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpGet("Account/EditEmployee/{id:guid}")]
+        public async Task<IActionResult> EditEmployee(Guid id)
+        {
+            var user = await _userManager
+                .Users.Include(u => u.ApplicationUserRole)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.Id == id.ToString());
+
+            if (user == null)
+            {
+                TempData["Error"] = "User not found";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var editEmployee = new EditEmployeeViewModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                RoleId = user.ApplicationUserRole.FirstOrDefault().RoleId,
+            };
+
+            var rolesList = new RolesListViewModel();
+
+            rolesList.Roles = await _roleManager.Roles.ToListAsync();
+
+            ViewBag.Roles = rolesList;
+
+            return PartialView("_EmployeeEditModal", editEmployee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(EditEmployeeViewModel editEmployee)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Error while updating employee!";
+                return Json(new { success = false });
+            }
+
+            var oldEmp = _userManager
+                .Users.Include(u => u.ApplicationUserRole)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefault(u => u.Id == editEmployee.Id);
+
+            var result = await _accountService.EditEmployeeAsync(editEmployee, oldEmp);
+
+            if (!result)
+            {
+                return Json(new { success = false });
+            }
+
+            return Json(new { success = true });
+        }
     }
 }
