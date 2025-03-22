@@ -13,7 +13,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="w-50 mx-auto">
+                <form class="w-50 mx-auto" id="editReservationForm">
                     <input hidden asp-for="ReservationId" value="@Model.ReservationId" />
 
                     <div class="my-2">
@@ -68,7 +68,7 @@
                     }
 
                     <div class="d-flex justify-content-end my-2">
-                        <button type="button" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-success" onclick="sendEditReservationForm()">Save</button>
                     </div>
                 </form>
             </div>

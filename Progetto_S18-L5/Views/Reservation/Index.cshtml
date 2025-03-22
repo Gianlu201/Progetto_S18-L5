@@ -5,7 +5,7 @@
 <div class="container">
     <h1>Reservations</h1>
 
-    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Employee"))
     {
         <div>
             <a class="btn btn-primary" asp-controller="Reservation" asp-action="Add">Add reservation</a>
@@ -45,7 +45,7 @@
                 console.log(data);
 
                 reservationsBox.innerHTML = data;
-                
+
             }
         }
 
@@ -64,6 +64,26 @@
             }
         }
 
+        async function sendEditReservationForm() {
+            const form = document.getElementById('editReservationForm');
+
+            if (form != null) {
+                const formData = new FormData(form);
+                const response = await fetch('Reservation/EditSave', {
+                    method: 'POST',
+                    body: formData
+                });
+                if(response.ok) {
+                    const data = await response.json();
+
+                    if(data.success) {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editReservationModal'));
+                        modal.hide();
+                        load();
+                    }
+                }
+            }
+        }
 
     </script>
 }

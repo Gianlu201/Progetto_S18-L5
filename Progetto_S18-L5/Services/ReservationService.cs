@@ -120,5 +120,36 @@ namespace Progetto_S18_L5.Services
                 };
             }
         }
+
+        public async Task<bool> EditReservation(
+            EditReservationViewModel editReservation,
+            string userId
+        )
+        {
+            try
+            {
+                var reservation = await _context.Reservations.FirstOrDefaultAsync(r =>
+                    r.ReservationId == Guid.Parse(editReservation.ReservationId)
+                );
+
+                if (reservation == null)
+                {
+                    return false;
+                }
+
+                reservation.CheckIn = editReservation.CheckIn;
+                reservation.CheckOut = editReservation.CheckOut;
+                reservation.ClientId = editReservation.ClientId;
+                reservation.RoomId = editReservation.RoomId;
+                reservation.State = editReservation.State;
+                reservation.EmployeeId = userId;
+
+                return await TrySaveAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

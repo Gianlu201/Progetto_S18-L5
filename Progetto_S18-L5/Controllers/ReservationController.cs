@@ -95,5 +95,26 @@ namespace Progetto_S18_L5.Controllers
 
             return PartialView("_ReservationEditModal", response);
         }
+
+        [HttpPost("Reservation/EditSave")]
+        public async Task<IActionResult> EditSave(EditReservationViewModel editReservation)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Invalid data!";
+                return RedirectToAction("Index");
+            }
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _reservationService.EditReservation(editReservation, userId);
+
+            if (!result)
+            {
+                return Json(new { success = false });
+            }
+
+            return Json(new { success = true });
+        }
     }
 }
