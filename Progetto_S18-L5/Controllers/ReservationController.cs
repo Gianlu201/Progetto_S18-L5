@@ -116,5 +116,31 @@ namespace Progetto_S18_L5.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpGet("Reservation/Delete/{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var reservation = await _reservationService.GetReservationForDeleteByIdAsync(id);
+
+            if (reservation.State == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return PartialView("_ReservationDeleteModal", reservation);
+        }
+
+        [HttpPost("Reservation/DeleteConfirm/{id:guid}")]
+        public async Task<IActionResult> DeleteConfirm(Guid id)
+        {
+            var result = await _reservationService.DeleteReservation(id);
+
+            if (!result)
+            {
+                return Json(new { success = false });
+            }
+
+            return Json(new { success = true });
+        }
     }
 }

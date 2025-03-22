@@ -85,5 +85,42 @@
             }
         }
 
+        async function showDeleteReservationModal(id) {
+            const modalBox = document.getElementById('modalBox');
+
+            const response = await fetch(`Reservation/Delete/${id}`, {
+                method: 'GET'
+            });
+
+            if(response.ok) {
+                const data = await response.text();
+
+                modalBox.innerHTML = data;
+
+                const modal = new bootstrap.Modal(document.getElementById('reservationDeleteModal'));
+                if(modal != null) {
+                    modal.show();
+                }
+            }
+        }
+
+        async function confirmDeleteReservation(id) {
+            const modalBox = document.getElementById('modalBox');
+
+            const response = await fetch(`Reservation/DeleteConfirm/${id}`, {
+                method: 'POST'
+            });
+
+            if(response.ok) {
+                const data = await response.json();
+
+                if(data.success) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('reservationDeleteModal'));
+                    modal.hide();
+                    load();
+                }
+            }
+        }
+
     </script>
 }

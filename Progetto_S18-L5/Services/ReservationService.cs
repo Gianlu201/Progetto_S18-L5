@@ -202,5 +202,63 @@ namespace Progetto_S18_L5.Services
                 return false;
             }
         }
+
+        public async Task<ReservationDeleteViewModel> GetReservationForDeleteByIdAsync(Guid id)
+        {
+            try
+            {
+                var reservation = await _context
+                    .Reservations.Include(r => r.Client)
+                    .Include(r => r.Employee)
+                    .Include(r => r.Room)
+                    .FirstOrDefaultAsync(r => r.ReservationId == id);
+
+                if (reservation == null)
+                {
+                    return new ReservationDeleteViewModel();
+                }
+
+                return new ReservationDeleteViewModel()
+                {
+                    CheckIn = reservation.CheckIn,
+                    CheckOut = reservation.CheckOut,
+                    ClientId = reservation.ClientId,
+                    RoomId = reservation.RoomId,
+                    State = reservation.State,
+                    EmployeeId = reservation.EmployeeId,
+                    ReservationId = reservation.ReservationId,
+                    Client = reservation.Client,
+                    Room = reservation.Room,
+                    Employee = reservation.Employee,
+                };
+            }
+            catch
+            {
+                return new ReservationDeleteViewModel();
+            }
+        }
+
+        public async Task<bool> DeleteReservation(Guid id)
+        {
+            try
+            {
+                var reservation = await _context.Reservations.FirstOrDefaultAsync(r =>
+                    r.ReservationId == id
+                );
+
+                if (reservation == null)
+                {
+                    return false;
+                }
+
+                _context.Reservations.Remove(reservation);
+
+                return await TrySaveAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
