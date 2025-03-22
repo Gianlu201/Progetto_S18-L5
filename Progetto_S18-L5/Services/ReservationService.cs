@@ -36,6 +36,7 @@ namespace Progetto_S18_L5.Services
                     .Reservations.Include(r => r.Client)
                     .Include(r => r.Room)
                     .Include(r => r.Employee)
+                    .OrderByDescending(r => r.State)
                     .ToListAsync();
 
                 return reservationsList;
