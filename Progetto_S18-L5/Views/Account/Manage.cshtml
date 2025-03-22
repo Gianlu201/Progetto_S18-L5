@@ -80,5 +80,36 @@
                 }
             }
         }
+
+        async function showEmployeeDeleteModal(id) {
+            const modalBox = document.getElementById('modalBox');
+            console.log("step1");
+
+            const response = await fetch(`/Account/DeleteEmployee/${id}`, {
+                method: 'GET'
+            });
+
+            if (response.ok) {
+                const data = await response.text();
+                modalBox.innerHTML = data;
+                const modal = new bootstrap.Modal(document.getElementById('userDeleteModal'));
+                modal.show();
+            }
+        }
+
+        async function confirmDelete(id) {
+            const response = await fetch(`/Account/DeleteEmployeeConfirm/${id}`, {
+                method: 'POST'
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('userDeleteModal'));
+                    modal.hide();
+                    init();
+                }
+            }
+
+        }
     </script>
 }

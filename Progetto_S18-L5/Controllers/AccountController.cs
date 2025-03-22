@@ -410,5 +410,40 @@ namespace Progetto_S18_L5.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpGet("Account/DeleteEmployee/{id:guid}")]
+        public async Task<IActionResult> DeleteEmployee(Guid id)
+        {
+            var employee = await _userManager.FindByIdAsync(id.ToString());
+            if (employee == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var resultUser = new UserDeleteViewModel()
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+            };
+            return PartialView("_UserDeleteModal", resultUser);
+        }
+
+        [HttpPost("Account/DeleteEmployeeConfirm/{id:guid}")]
+        public async Task<IActionResult> DeleteEmployeeConfirm(Guid id)
+        {
+            var employee = await _userManager.FindByIdAsync(id.ToString());
+            if (employee == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var result = await _userManager.DeleteAsync(employee);
+            if (!result.Succeeded)
+            {
+                TempData["Error"] = "Error while deleting employee!";
+                return Json(new { success = false });
+            }
+            return Json(new { success = true });
+        }
     }
 }
