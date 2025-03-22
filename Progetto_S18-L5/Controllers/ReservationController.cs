@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Progetto_S18_L5.ViewModels;
 
 namespace Progetto_S18_L5.Controllers
 {
+    [Authorize]
     public class ReservationController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -26,11 +28,13 @@ namespace Progetto_S18_L5.Controllers
             _roomService = roomService;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllReservations()
         {
@@ -39,6 +43,9 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_ReservationsList", reservationsList);
         }
 
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
+        [Authorize]
         public async Task<IActionResult> Add()
         {
             var clientsList = await _userManager
@@ -55,6 +62,9 @@ namespace Progetto_S18_L5.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(AddReservationViewModel addReservation)
         {
@@ -71,6 +81,9 @@ namespace Progetto_S18_L5.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpGet("Reservation/Edit/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -96,6 +109,9 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_ReservationEditModal", response);
         }
 
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpPost("Reservation/EditSave")]
         public async Task<IActionResult> EditSave(EditReservationViewModel editReservation)
         {
@@ -117,6 +133,9 @@ namespace Progetto_S18_L5.Controllers
             return Json(new { success = true });
         }
 
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpGet("Reservation/Delete/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -130,6 +149,9 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_ReservationDeleteModal", reservation);
         }
 
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
+        [Authorize]
         [HttpPost("Reservation/DeleteConfirm/{id:guid}")]
         public async Task<IActionResult> DeleteConfirm(Guid id)
         {

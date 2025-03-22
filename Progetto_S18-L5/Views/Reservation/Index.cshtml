@@ -2,10 +2,12 @@
     ViewData["Title"] = "Reservations";
 }
 
+@* @if (User.Identity.IsAuthenticated && (User.IsInRole("Employee") || User.IsInRole("Manager") || User.IsInRole("Admin"))) {} *@
+
 <div class="container">
     <h1>Reservations</h1>
 
-    @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Employee"))
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
     {
         <div>
             <a class="btn btn-primary" asp-controller="Reservation" asp-action="Add">Add reservation</a>

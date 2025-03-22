@@ -34,11 +34,13 @@ namespace Progetto_S18_L5.Controllers
             _accountService = accountService;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Manage()
         {
             return View();
@@ -47,6 +49,11 @@ namespace Progetto_S18_L5.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -111,7 +118,7 @@ namespace Progetto_S18_L5.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Register()
         {
             return View();
@@ -129,7 +136,7 @@ namespace Progetto_S18_L5.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
@@ -170,7 +177,7 @@ namespace Progetto_S18_L5.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> RegisterEmployee(
             RegisterEmployeeViewModel registerEmployeeViewModel
@@ -243,6 +250,7 @@ namespace Progetto_S18_L5.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllClients()
         {
@@ -255,6 +263,7 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_ClientsList", usersList);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllEmployee()
         {
@@ -269,6 +278,7 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_EmployeesList", usersList);
         }
 
+        [Authorize]
         [HttpGet("Account/EditClient/{id:guid}")]
         public async Task<IActionResult> EditClient(Guid id)
         {
@@ -292,6 +302,7 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_ClientEditModal", editClientViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> EditClient(EditClientViewModel editClient)
         {
@@ -311,6 +322,7 @@ namespace Progetto_S18_L5.Controllers
             return Json(new { success = true });
         }
 
+        [Authorize]
         [HttpGet("Account/DeleteClient/{id:guid}")]
         public async Task<IActionResult> DeleteClient(Guid id)
         {
@@ -332,6 +344,7 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_UserDeleteModal", resultUser);
         }
 
+        [Authorize]
         [HttpPost("Account/ConfirmDeleteClient/{id:guid}")]
         public async Task<IActionResult> ConfirmDeleteClient(Guid id)
         {
@@ -354,6 +367,7 @@ namespace Progetto_S18_L5.Controllers
             return Json(new { success = true });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Account/EditEmployee/{id:guid}")]
         public async Task<IActionResult> EditEmployee(Guid id)
         {
@@ -387,6 +401,7 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_EmployeeEditModal", editEmployee);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditEmployee(EditEmployeeViewModel editEmployee)
         {
@@ -411,6 +426,7 @@ namespace Progetto_S18_L5.Controllers
             return Json(new { success = true });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Account/DeleteEmployee/{id:guid}")]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
@@ -429,6 +445,7 @@ namespace Progetto_S18_L5.Controllers
             return PartialView("_UserDeleteModal", resultUser);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Account/DeleteEmployeeConfirm/{id:guid}")]
         public async Task<IActionResult> DeleteEmployeeConfirm(Guid id)
         {
